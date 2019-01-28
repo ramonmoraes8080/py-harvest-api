@@ -36,6 +36,40 @@ resp = api.get(params={
 
 ### Services (Common Routines)
 
+### Module CLI
+
+- Get all projects
+
+```
+python -m harvest.cli projects get all
+```
+
+- Get all tasks
+
+```
+python -m harvest.cli tasks get all
+```
+
+- Create time entry
+
+```
+python -m harvest.cli timeentry new [entry note] [date] [task id] [project id]
+```
+
+Examples:
+
+- One project for today
+
+```
+python -m harvest.cli timeentry new "Hello world" today 9999999 8888888
+```
+
+- More than one project for today
+
+```
+python -m harvest.cli timeentry new "Hello world" today 9999999 8888888,7777777
+```
+
 ## Tests
 
 `make tests`
