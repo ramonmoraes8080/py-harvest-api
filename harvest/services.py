@@ -4,14 +4,17 @@ from datetime import datetime
 from datetime import timedelta
 from auth import PersonalAccessAuthClient
 from api import TimeEntry
+from api import Projects
+from api import Tasks
 
 
 class BaseService(object):
 
-    def __init__(self, personal_token=None, account_id=None):
+    def __init__(self, personal_token=None, account_id=None, cfg=None):
         self.client = PersonalAccessAuthClient(
             personal_token,
             account_id,
+            cfg,
         )
 
 
@@ -74,3 +77,27 @@ class PreviousWeek(TimeRangeBaseService):
         self.date_from = self.date_from.strftime('%Y-%m-%d')
         return (self.date_from, self.date_to)
 
+
+class AllProjects(BaseService):
+
+    def all(self):
+        ret = []
+        resp = Projects(client=self.client).get()
+        total_pages = resp.json()['total_pages']
+        for i in range(1, total_pages + 1):
+            resp = Projects(client=self.client).get(page=i)
+            ret += resp.json()['projects']
+        return ret
+
+
+class AllTasks(BaseService):
+
+    def all(self):
+        ret = []
+        resp = Tasks(client=self.client).get()
+        print resp.json()
+        total_pages = resp.json()['total_pages']
+        for i in range(1, total_pages + 1):
+            resp = Tasks(client=self.client).get(page=i)
+            ret += resp.json()['tasks']
+        return ret
