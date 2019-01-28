@@ -9,7 +9,7 @@ class Endpoint(object):
 
     def get_url(self):
         return '{}{}'.format(
-            self.client.get_base_url(),
+            self.client.get_base_api_url(),
             self.path,
         )
 
@@ -17,15 +17,33 @@ class Endpoint(object):
         url = self.get_url()
         params = kwargs
         headers = self.client.get_headers()
-        logging.debug('HTTP - GET - URL {}'.format(url))
-        logging.debug('HTTP - GET - Params '.format(params))
-        logging.debug('HTTP - GET - Headers {}'.format(headers))
+        logging.debug('HTTP - GET - Request - URL {}'.format(url))
+        logging.debug('HTTP - GET - Request - Params '.format(params))
+        logging.debug('HTTP - GET - Request - Headers {}'.format(headers))
         resp = requests.get(
             url=url,
             headers=headers,
             params=params,
         )
-        logging.debug('HTTP - GET - Response {}'.format(resp.content))
+        logging.debug('HTTP - GET - Response - status code - {}'.format(resp.status_code))
+        logging.debug('HTTP - GET - Response - content - {}'.format(resp.content))
+        return resp
+
+    def post(self, *args, **kwargs):
+        url = self.get_url()
+        params = kwargs.get('params', {})
+        data = kwargs.get('data', {})
+        headers = self.client.get_headers()
+        logging.debug('HTTP - POST - URL {}'.format(url))
+        logging.debug('HTTP - POST - Params '.format(params))
+        logging.debug('HTTP - POST - Headers {}'.format(headers))
+        resp = requests.post(
+            url=url,
+            headers=headers,
+            params=params,
+            data=data,
+        )
+        logging.debug('HTTP - POST - Response {}'.format(resp.content))
         return resp
 
 
@@ -57,19 +75,13 @@ class Tasks(Endpoint):
     POST:
     '''
 
-class TimeEntry(object):
+class TimeEntry(Endpoint):
 
-    def __init__(self, client):
-        self.client = client
+    path = '/time_entries'
 
-    def get_base_url(self):
-        return '{}/time_entries'.format(
-            self.client.get_base_api_url(),
-        )
-
-    def get(self, *args, **kwargs):
-        '''
-        params (dict):
+    '''
+    HTTP Methods:
+        GET:
             user_id (integer):
                 Only return time entries belonging to the user with the given ID.
             client_id (integer):
@@ -99,20 +111,7 @@ class TimeEntry(object):
             per_page (integer):
                 The number of records to return per page. Can range between
                 1 and 100. (Default: 100)
-        '''
-        url = self.get_base_url()
-        params = kwargs['params']
-        resp = requests.get(
-            url=url,
-            headers=self.client.get_headers(),
-            params=kwargs.get('params', {}),
-        )
-
-        return resp
-
-    def post(self, *args, **kwargs):
-        '''
-        params (dict):
+        POST:
             user_id (integer / optional):
                 The ID of the user to associate with the time entry. Defaults
                 to the currently authenticated user's ID.
@@ -132,4 +131,4 @@ class TimeEntry(object):
             external_reference (object / optional):
                 An object containing the id, group_id, and permalink of the
                 external reference.
-        '''
+    '''
