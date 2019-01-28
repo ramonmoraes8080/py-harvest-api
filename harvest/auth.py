@@ -17,7 +17,7 @@ class Client(object):
 
 class PersonalAccessAuthClient(Client):
 
-    def __init__(self, token=None, account_id=None):
+    def __init__(self, token=None, account_id=None, cfg=None):
         if token:
             self.token = token
         else:
@@ -27,6 +27,12 @@ class PersonalAccessAuthClient(Client):
             self.account_id = account_id
         else:
             self.account_id = os.environ.get('HARVEST_PA_ACCOUNT_ID')
+
+        if cfg:
+            config = ConfigParser.RawConfigParser()
+            config.read(cfg)
+            self.token = config.get('authentication', 'token')
+            self.account_id = config.get('authentication', 'account_id')
 
     def get_headers(self):
         ret = {
