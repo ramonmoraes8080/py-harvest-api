@@ -6,7 +6,7 @@
 
 ## Setup
 
-`pip install git+https://github.com/tangentlabs/django-oscar-paypal.git@latest`
+`pip install git+https://github.com/vyscond/python-harvest.git@latest`
 
 ## Usage
 
