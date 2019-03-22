@@ -95,7 +95,6 @@ class AllTasks(BaseService):
     def all(self):
         ret = []
         resp = Tasks(client=self.client).get()
-        print resp.json()
         total_pages = resp.json()['total_pages']
         for i in range(1, total_pages + 1):
             resp = Tasks(client=self.client).get(page=i)
