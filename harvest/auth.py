@@ -1,6 +1,9 @@
 import os
 import json
-import ConfigParser
+try:
+    import ConfigParser
+except ModuleNotFoundError as ex:
+    from configparser import ConfigParser
 
 
 HARVEST_DEBUG = int(os.environ.get('HARVEST_DEBUG', 0))
