@@ -1,9 +1,9 @@
 import sys
 import logging
 from datetime import datetime
-from api import *
-from auth import *
-from services import *
+from harvest.api import *
+from harvest.auth import *
+from harvest.services import *
 
 
 if __name__ == '__main__':

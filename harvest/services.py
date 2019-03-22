@@ -2,7 +2,7 @@ import json
 import logging
 from datetime import datetime
 from datetime import timedelta
-from auth import PersonalAccessAuthClient
+from harvest.auth import PersonalAccessAuthClient
 from api import TimeEntry
 from api import Projects
 from api import Tasks
